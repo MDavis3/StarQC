@@ -1,0 +1,4 @@
+﻿    def _compute_line_guard(self) -> int:
+        if self.config.line.notch_hz is None or self.config.line.notch_hz <= 0:
+            return 0
+        return max(int(round(self.config.line.window_s * self.fs)), 1)

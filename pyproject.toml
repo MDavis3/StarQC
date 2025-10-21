@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "starqc"
+version = "0.1.0"
+description = "Starfish Artifact Removal & QC Library"
+readme = "docs/README.md"
+requires-python = ">=3.9"
+authors = [{name = "Starfish Neuroscience"}]
+license = {text = "Apache-2.0"}
+dependencies = [
+    "numpy>=1.23",
+    "scipy>=1.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "ruff>=0.0.285",
+    "isort>=5.12",
+]
+
+[project.scripts]
+starqc = "starqc.cli:main"
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config --cov=starqc.detect --cov=starqc.filters --cov=starqc.qc --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["starqc"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+
+[tool.black]
+target-version = ["py39"]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+known_first_party = ["starqc"]
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E203"]
