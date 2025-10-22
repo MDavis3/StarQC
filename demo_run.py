@@ -1,4 +1,5 @@
 ﻿import json
+from dataclasses import replace
 import numpy as np
 from starqc.config import get_default_config
 from starqc.clean import clean_lfp
@@ -7,6 +8,8 @@ from starqc.simulate import SimulationConfig, base_signal, inject_line_hum, inje
 fs = 1000.0
 samples = 5000
 cfg = get_default_config()
+# Demo tip: use multiple harmonics for mains hum (e.g., 60, 120, 180 Hz)
+cfg = replace(cfg, line=replace(cfg.line, harmonics=3))
 base = base_signal(SimulationConfig(channels=2, samples=samples, fs=fs))
 data = inject_line_hum(base, fs, amplitude=40.0)
 data = inject_slow_drift(data, fs, amplitude=200.0)
@@ -30,3 +33,4 @@ print('Channel 1 metrics:', report['metrics'][1])
 print('Flags:', report['flags'])
 print('Runtime ms:', report['provenance']['runtime_ms'])
 print('Artifacts saved: demo_clean.npy, demo_report.json')
+print('Note: This synthetic fixture has modest oscillation, so SNR proxy may be low even when cleaning is correct.')

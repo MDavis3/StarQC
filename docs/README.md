@@ -34,3 +34,30 @@ good_channels = [cid for cid, flag in report["flags"].items() if flag["pass"]]
 ```
 
 See `docs/QUICKSTART.md` for end-to-end walkthroughs and fixture recipes.
+
+## Configuration tips
+
+Tune mains removal and QC thresholds from Python:
+
+```python
+from dataclasses import replace
+from starqc.config import get_default_config
+
+cfg = get_default_config()
+# Example: remove 60/120/180 Hz in labs with strong mains
+cfg = replace(cfg, line=replace(cfg.line, harmonics=3))
+# Example: keep default QC thresholds (line_ratio≤0.2, etc.)
+```
+
+CLI with known voltage rails and stim times:
+
+```bash
+starqc clean data.npy \
+  --fs 1000 \
+  --stim stim.csv \
+  --out clean.npy \
+  --report report.json \
+  --voltage-range -500 500
+```
+
+Note on demos: synthetic fixtures with modest oscillations can show low SNR proxy even when cleaning is correct. Focus first on line_ratio, drift_index, and masked_frac; adjust harmonics as needed.
