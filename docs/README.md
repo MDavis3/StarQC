@@ -61,3 +61,11 @@ starqc clean data.npy \
 ```
 
 Note on demos: synthetic fixtures with modest oscillations can show low SNR proxy even when cleaning is correct. Focus first on line_ratio, drift_index, and masked_frac; adjust harmonics as needed.
+
+## MVP notes (for reviewers)
+
+- Purpose: deterministic, streaming-safe artifact removal and simple QC for early LFP data.
+- What to look at first: line_ratio, drift_index, masked_frac; then SNR proxy and stationarity.
+- Demo config: harmonics=3 for 60/120/180 Hz; default QC thresholds kept.
+- Caveat: synthetic demo has modest oscillation, so SNR proxy may read low despite correct cleaning.
+- Why now: reproducible cleaning + audit-ready reports de-risk early experiments and speed up closed-loop tests.
