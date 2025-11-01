@@ -32,8 +32,20 @@ def _build_parser() -> argparse.ArgumentParser:
     clean_parser.add_argument("input", type=Path, help="Path to input .npy file")
     clean_parser.add_argument("--fs", type=float, required=True, help="Sampling rate in Hz")
     clean_parser.add_argument("--stim", type=Path, help="CSV of stimulation times (seconds)")
-    clean_parser.add_argument("--out", type=Path, required=True, help="Output .npy for cleaned data")
-    clean_parser.add_argument("--report", type=Path, required=True, help="Output JSON report path")
+    clean_parser.add_argument(
+        "--out",
+        type=Path,
+        required=False,
+        default=None,
+        help="Output .npy for cleaned data (default: <input>_clean.npy)",
+    )
+    clean_parser.add_argument(
+        "--report",
+        type=Path,
+        required=False,
+        default=None,
+        help="Output JSON report path (default: <input>_report.json)",
+    )
     clean_parser.add_argument(
         "--no-reference",
         action="store_true",
@@ -60,6 +72,10 @@ def _cmd_clean(args: argparse.Namespace) -> int:
 
     stim_times = _load_stim_csv(args.stim) if args.stim else None
 
+    # Derive default outputs if not provided
+    out_path = args.out or args.input.with_name(args.input.stem + "_clean.npy")
+    report_path = args.report or args.input.with_name(args.input.stem + "_report.json")
+
     clean, report = clean_lfp(
         data,
         fs=float(args.fs),
@@ -68,8 +84,8 @@ def _cmd_clean(args: argparse.Namespace) -> int:
         config=config,
     )
 
-    np.save(args.out, clean)
-    dump_report(args.report, _serialise_report(report))
+    np.save(out_path, clean)
+    dump_report(report_path, _serialise_report(report))
     return 0
 
 

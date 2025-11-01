@@ -19,8 +19,10 @@ pip install -e .[dev]
 Clean a NumPy voltage file and generate a report:
 
 ```bash
-starqc clean data.npy --fs 1000 --out clean.npy --report report.json
+starqc clean data.npy --fs 1000
 ```
+
+By default, outputs are written next to the input as `data_clean.npy` and `data_report.json`. You can still override with `--out` and `--report`.
 
 Use the Python API for in-memory arrays:
 
@@ -55,8 +57,6 @@ CLI with known voltage rails and stim times:
 starqc clean data.npy \
   --fs 1000 \
   --stim stim.csv \
-  --out clean.npy \
-  --report report.json \
   --voltage-range -500 500
 ```
 

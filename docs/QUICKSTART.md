@@ -26,10 +26,10 @@ Optional stimulus times (seconds) go in a CSV:
 ## 3. Run the CLI
 
 ```bash
-starqc clean lfp.npy --fs 1000 --stim stim.csv --out clean.npy --report report.json
+starqc clean lfp.npy --fs 1000 --stim stim.csv
 ```
 
-The command writes the filtered array to `clean.npy` and a JSON report (mask, metrics, flags, provenance).
+The command writes the filtered array to `lfp_clean.npy` and a JSON report `lfp_report.json` (mask, metrics, flags, provenance). Override paths with `--out` and `--report` if needed.
 
 ## 4. Use the Python API
 
